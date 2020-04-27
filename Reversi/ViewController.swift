@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 class ViewController: UIViewController {
     @IBOutlet private var boardView: BoardView!
@@ -17,6 +18,11 @@ class ViewController: UIViewController {
     @IBOutlet private var playerControls: [UISegmentedControl]!
     @IBOutlet private var countLabels: [UILabel]!
     @IBOutlet private var playerActivityIndicators: [UIActivityIndicatorView]!
+
+    // presenter
+    // TODO: DI
+    private var presenter = ViewControllerPresenter()
+    private var cancellables: Set<AnyCancellable> = []
     
     /// どちらの色のプレイヤーのターンかを表します。ゲーム終了時は `nil` です。
     private var turn: Disk? = .dark
@@ -28,7 +34,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         boardView.delegate = self
         messageDiskSize = messageDiskSizeConstraint.constant
         
@@ -37,6 +43,8 @@ class ViewController: UIViewController {
         } catch _ {
             newGame()
         }
+
+        subscribePresenter()
     }
     
     private var viewHasAppeared: Bool = false
@@ -46,6 +54,13 @@ class ViewController: UIViewController {
         if viewHasAppeared { return }
         viewHasAppeared = true
         waitForPlayer()
+    }
+
+    private func subscribePresenter() {
+        presenter.darkCountSubject.map({x in String(x)}).assign(to: \.text, on: countLabels[0])
+            .store(in: &cancellables)
+        presenter.lightCountSubject.map({x in String(x)}).assign(to: \.text, on: countLabels[1])
+            .store(in: &cancellables)
     }
 }
 
@@ -314,9 +329,8 @@ extension ViewController {
 extension ViewController {
     /// 各プレイヤーの獲得したディスクの枚数を表示します。
     func updateCountLabels() {
-        for side in Disk.sides {
-            countLabels[side.index].text = "\(countDisks(of: side))"
-        }
+        presenter.darkCountSubject.send(countDisks(of: .dark))
+        presenter.lightCountSubject.send(countDisks(of: .light))
     }
     
     /// 現在の状況に応じてメッセージを表示します。

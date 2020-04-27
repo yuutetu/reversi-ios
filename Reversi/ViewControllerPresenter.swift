@@ -6,6 +6,9 @@
 //  Copyright © 2020 Yuta Koshizawa. All rights reserved.
 //
 
+import Combine
+
 class ViewControllerPresenter {
-    
+    let darkCountSubject = CurrentValueSubject<Int, Never>(0)
+    let lightCountSubject = CurrentValueSubject<Int, Never>(0)
 }
