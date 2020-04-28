@@ -14,6 +14,20 @@ enum Turn {
     case finished
 }
 
+enum Player: Int {
+    case manual = 0
+    case computer = 1
+
+    var change: Player {
+        switch self {
+        case .manual:
+            return .computer
+        case .computer:
+            return .manual
+        }
+    }
+}
+
 class ViewControllerPresenter {
     let darkCountSubject = CurrentValueSubject<Int, Never>(0)
     let lightCountSubject = CurrentValueSubject<Int, Never>(0)
@@ -21,21 +35,39 @@ class ViewControllerPresenter {
 
     let playerControlValueChangedEvent = PassthroughSubject<Disk, Never>()
     let playerControlChangeRequest = PassthroughSubject<Disk, Never>()
-    let playerControlSubject = CurrentValueSubject<Disk, Never>(.dark)
+    let darkPlayerControlSubject = CurrentValueSubject<Player, Never>(.manual)
+    let lightPlayerControlSubject = CurrentValueSubject<Player, Never>(.manual)
 
     private var cancellables: Set<AnyCancellable> = []
 
     init() {
         playerControlValueChangedEvent
-            .subscribe(playerControlSubject)
+            .filter({ disk in disk == .dark })
+            .map({ _ in self.darkPlayerControlSubject.value.change })
+            .subscribe(darkPlayerControlSubject)
             .store(in: &cancellables)
         playerControlChangeRequest
-            .subscribe(playerControlSubject)
+            .filter({ disk in disk == .dark })
+            .map({ _ in self.darkPlayerControlSubject.value.change })
+            .subscribe(darkPlayerControlSubject)
+            .store(in: &cancellables)
+        playerControlValueChangedEvent
+            .filter({ disk in disk == .light })
+            .map({ _ in self.lightPlayerControlSubject.value.change })
+            .subscribe(lightPlayerControlSubject)
+            .store(in: &cancellables)
+        playerControlChangeRequest
+            .filter({ disk in disk == .light })
+            .map({ _ in self.lightPlayerControlSubject.value.change })
+            .subscribe(lightPlayerControlSubject)
             .store(in: &cancellables)
 
         // For Debug
-        playerControlSubject.sink { disk in
-            print(disk)
+        darkPlayerControlSubject.sink { player in
+            print("[Debug] disk: dark, player: " + String(player.rawValue))
+        }.store(in: &cancellables)
+        lightPlayerControlSubject.sink { player in
+            print("[Debug] disk: light, player: " + String(player.rawValue))
         }.store(in: &cancellables)
     }
 
