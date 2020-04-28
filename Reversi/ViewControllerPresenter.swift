@@ -19,6 +19,26 @@ class ViewControllerPresenter {
     let lightCountSubject = CurrentValueSubject<Int, Never>(0)
     let turnSubject = CurrentValueSubject<Turn, Never>(.current(.dark))
 
+    let playerControlValueChangedEvent = PassthroughSubject<Disk, Never>()
+    let playerControlChangeRequest = PassthroughSubject<Disk, Never>()
+    let playerControlSubject = CurrentValueSubject<Disk, Never>(.dark)
+
+    private var cancellables: Set<AnyCancellable> = []
+
+    init() {
+        playerControlValueChangedEvent
+            .subscribe(playerControlSubject)
+            .store(in: &cancellables)
+        playerControlChangeRequest
+            .subscribe(playerControlSubject)
+            .store(in: &cancellables)
+
+        // For Debug
+        playerControlSubject.sink { disk in
+            print(disk)
+        }.store(in: &cancellables)
+    }
+
     // 互換性担保
     var unsafeTurn: Disk? {
         switch turnSubject.value {

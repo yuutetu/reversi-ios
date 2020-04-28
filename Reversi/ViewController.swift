@@ -58,6 +58,13 @@ class ViewController: UIViewController {
             .store(in: &cancellables)
         presenter.lightCountSubject.map({x in String(x)}).assign(to: \.text, on: countLabels[1])
             .store(in: &cancellables)
+
+        playerControls[0].publisher(for: .valueChanged).map { _ in Disk.dark }
+            .subscribe(presenter.playerControlValueChangedEvent)
+            .store(in: &cancellables)
+        playerControls[1].publisher(for: .valueChanged).map { _ in Disk.light }
+            .subscribe(presenter.playerControlValueChangedEvent)
+            .store(in: &cancellables)
     }
 }
 

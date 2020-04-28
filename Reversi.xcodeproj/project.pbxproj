@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20DDF21F2456798200F0278B /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF21E2456798200F0278B /* ViewControllerPresenter.swift */; };
+		20DDF2292457DBB400F0278B /* UISegmentedControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */; };
 		D636B39F23D35043007F370F /* DiskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636B39E23D35043007F370F /* DiskView.swift */; };
 		D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB323A9FE4500396732 /* AppDelegate.swift */; };
 		D642BDB623A9FE4500396732 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB523A9FE4500396732 /* SceneDelegate.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		20DDF21E2456798200F0278B /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
+		20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Publisher.swift"; sourceTree = "<group>"; };
 		D636B39E23D35043007F370F /* DiskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskView.swift; sourceTree = "<group>"; };
 		D642BDB023A9FE4500396732 /* Reversi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reversi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D642BDB323A9FE4500396732 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		20DDF2272457DB7300F0278B /* Publishers */ = {
+			isa = PBXGroup;
+			children = (
+				20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */,
+			);
+			name = Publishers;
+			sourceTree = "<group>";
+		};
 		D636B3A123D43203007F370F /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +117,7 @@
 		D642BDB223A9FE4500396732 /* Reversi */ = {
 			isa = PBXGroup;
 			children = (
+				20DDF2272457DB7300F0278B /* Publishers */,
 				D642BDB323A9FE4500396732 /* AppDelegate.swift */,
 				D642BDB523A9FE4500396732 /* SceneDelegate.swift */,
 				D642BDB723A9FE4500396732 /* ViewController.swift */,
@@ -146,6 +157,8 @@
 			dependencies = (
 			);
 			name = Reversi;
+			packageProductDependencies = (
+			);
 			productName = Reversi;
 			productReference = D642BDB023A9FE4500396732 /* Reversi.app */;
 			productType = "com.apple.product-type.application";
@@ -196,6 +209,8 @@
 				Base,
 			);
 			mainGroup = D642BDA723A9FE4500396732;
+			packageReferences = (
+			);
 			productRefGroup = D642BDB123A9FE4500396732 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -239,6 +254,7 @@
 				D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */,
 				D642BDB623A9FE4500396732 /* SceneDelegate.swift in Sources */,
 				20DDF21F2456798200F0278B /* ViewControllerPresenter.swift in Sources */,
+				20DDF2292457DBB400F0278B /* UISegmentedControl+Publisher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
