@@ -65,6 +65,30 @@ class ViewController: UIViewController {
         playerControls[1].publisher(for: .valueChanged).map { _ in Disk.light }
             .subscribe(presenter.playerControlValueChangedEvent)
             .store(in: &cancellables)
+
+        presenter.playerControlValueChangedEvent.sink { side in
+            try? self.saveGame()
+
+            if let canceller = self.playerCancellers[side] {
+                canceller.cancel()
+            }
+
+            var player: Player
+            switch side {
+            case .dark:
+                player = self.presenter.darkPlayerControlSubject.value
+            case .light:
+                player = self.presenter.lightPlayerControlSubject.value
+            }
+
+            if !self.isAnimating,
+                case let .current(turn) = self.presenter.turnSubject.value,
+                side == turn,
+                case .computer = player
+            {
+                self.playTurnOfComputer()
+            }
+        }.store(in: &cancellables)
     }
 }
 
@@ -393,25 +417,6 @@ extension ViewController {
             self.waitForPlayer()
         })
         present(alertController, animated: true)
-    }
-    
-    /// プレイヤーのモードが変更された場合に呼ばれるハンドラーです。
-    @IBAction func changePlayerControlSegment(_ sender: UISegmentedControl) {
-        let side: Disk = Disk(index: playerControls.firstIndex(of: sender)!)
-        
-        try? saveGame()
-        
-        if let canceller = playerCancellers[side] {
-            canceller.cancel()
-        }
-        
-        if !isAnimating,
-            case let .current(turn) = presenter.turnSubject.value,
-            side == turn,
-            case .computer = Player(rawValue: sender.selectedSegmentIndex)!
-        {
-            playTurnOfComputer()
-        }
     }
 }
 
