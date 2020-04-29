@@ -94,6 +94,10 @@ class ViewController: UIViewController {
             .map { player in player.rawValue }
             .assign(to: \.selectedSegmentIndex, on: playerControls[0])
             .store(in: &cancellables)
+        presenter.lightPlayerControlSubject
+            .map { player in player.rawValue }
+            .assign(to: \.selectedSegmentIndex, on: playerControls[1])
+            .store(in: &cancellables)
     }
 }
 
@@ -275,7 +279,7 @@ extension ViewController {
     func newGame() {
         boardView.reset()
         presenter.turnSubject.send(.current(.dark))
-        
+
         presenter.playerControlChangeRequest.send((.dark, .manual))
         presenter.playerControlChangeRequest.send((.light, .manual))
 
