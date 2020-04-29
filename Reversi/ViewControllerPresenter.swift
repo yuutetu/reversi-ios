@@ -41,6 +41,10 @@ class ViewControllerPresenter {
     let darkActivityIndicatorSubject = CurrentValueSubject<Bool, Never>(false)
     let lightActivityIndicatorSubject = CurrentValueSubject<Bool, Never>(false)
 
+    // For UI
+//    let messageTextSubject = CurrentValueSubject<String, Naver>()
+//    let messageDiskSubject = CurrentValueSubject<Disk?, Naver>()
+
     private var cancellables: Set<AnyCancellable> = []
 
     init() {
@@ -64,6 +68,20 @@ class ViewControllerPresenter {
             .map({ (disk, player) in player })
             .subscribe(lightPlayerControlSubject)
             .store(in: &cancellables)
+
+        // TODO: turnSubject -> messageTextSubject
+        // Blocker: 勝者判定
+//        turnSubject.flatMap { turn in
+//            switch turn {
+//            case .current(let disk):
+//                return disk
+//            case .finished:
+//
+//            }
+//        }
+
+        // TODO: turnSubject -> messageDiskSubject
+        // Blocker: 勝者判定
 
         // For Debug
         darkPlayerControlSubject.sink { player in
