@@ -507,7 +507,7 @@ extension ViewController {
             else {
                 throw FileIOError.read(path: path, cause: nil)
             }
-            presenter.unsafeSetDisk(disk: disk)
+            presenter.unsafeSetTurn(disk: disk)
         }
 
         // players

@@ -102,7 +102,7 @@ class ViewControllerPresenter {
         }
     }
 
-    func unsafeSetDisk(disk: Disk?) {
+    func unsafeSetTurn(disk: Disk?) {
         switch disk {
         case .some(let disk):
             turnSubject.send(.current(disk))
