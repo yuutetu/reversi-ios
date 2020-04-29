@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20DDF21F2456798200F0278B /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF21E2456798200F0278B /* ViewControllerPresenter.swift */; };
 		20DDF2292457DBB400F0278B /* UISegmentedControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */; };
+		20DDF22B2459153800F0278B /* ViewControllerPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF22A2459153800F0278B /* ViewControllerPresenterTests.swift */; };
 		D636B39F23D35043007F370F /* DiskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636B39E23D35043007F370F /* DiskView.swift */; };
 		D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB323A9FE4500396732 /* AppDelegate.swift */; };
 		D642BDB623A9FE4500396732 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB523A9FE4500396732 /* SceneDelegate.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		20DDF21E2456798200F0278B /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Publisher.swift"; sourceTree = "<group>"; };
+		20DDF22A2459153800F0278B /* ViewControllerPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenterTests.swift; sourceTree = "<group>"; };
 		D636B39E23D35043007F370F /* DiskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskView.swift; sourceTree = "<group>"; };
 		D642BDB023A9FE4500396732 /* Reversi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reversi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D642BDB323A9FE4500396732 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			children = (
 				D642BDCA23A9FE4700396732 /* ReversiTests.swift */,
 				D642BDCC23A9FE4700396732 /* Info.plist */,
+				20DDF22A2459153800F0278B /* ViewControllerPresenterTests.swift */,
 			);
 			path = ReversiTests;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D642BDCB23A9FE4700396732 /* ReversiTests.swift in Sources */,
+				20DDF22B2459153800F0278B /* ViewControllerPresenterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
