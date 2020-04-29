@@ -291,11 +291,11 @@ extension ViewController {
     
     /// プレイヤーの行動を待ちます。
     func waitForPlayer() {
-        guard case let .current(turn) = presenter.turnSubject.value else {
+        guard case let .current(disk) = presenter.turnSubject.value else {
             return
         }
 
-        switch Player(rawValue: playerControls[turn.index].selectedSegmentIndex)! {
+        switch presenter.playerControlSubject(forDisk: disk).value {
         case .manual:
             break
         case .computer:

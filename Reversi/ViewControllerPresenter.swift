@@ -71,6 +71,15 @@ class ViewControllerPresenter {
         }.store(in: &cancellables)
     }
 
+    func playerControlSubject(forDisk disk: Disk) -> CurrentValueSubject<Player, Never> {
+        switch disk {
+        case .dark:
+            return darkPlayerControlSubject
+        case .light:
+            return lightPlayerControlSubject
+        }
+    }
+
     // 互換性担保
     var unsafeTurn: Disk? {
         switch turnSubject.value {
