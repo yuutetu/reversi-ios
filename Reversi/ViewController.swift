@@ -434,14 +434,14 @@ extension ViewController: BoardViewDelegate {
     /// - Parameter x: セルの列です。
     /// - Parameter y: セルの行です。
     func boardView(_ boardView: BoardView, didSelectCellAtX x: Int, y: Int) {
-        guard case let .current(turn) = presenter.turnSubject.value else {
+        guard case let .current(disk) = presenter.turnSubject.value else {
             return
         }
 
         if isAnimating { return }
-        guard case .manual = Player(rawValue: playerControls[turn.index].selectedSegmentIndex)! else { return }
+        guard case .manual = presenter.playerControlSubject(forDisk: disk).value else { return }
         // try? because doing nothing when an error occurs
-        try? placeDisk(turn, atX: x, y: y, animated: true) { [weak self] _ in
+        try? placeDisk(disk, atX: x, y: y, animated: true) { [weak self] _ in
             self?.nextTurn()
         }
     }
@@ -458,9 +458,8 @@ extension ViewController {
     func saveGame() throws {
         var output: String = ""
         output += presenter.unsafeTurn.symbol
-        for side in Disk.sides {
-            output += playerControls[side.index].selectedSegmentIndex.description
-        }
+        output += presenter.darkPlayerControlSubject.value.rawValue.description
+        output += presenter.lightPlayerControlSubject.value.rawValue.description
         output += "\n"
         
         for y in boardView.yRange {
@@ -505,7 +504,7 @@ extension ViewController {
             else {
                 throw FileIOError.read(path: path, cause: nil)
             }
-            playerControls[side.index].selectedSegmentIndex = player.rawValue
+            presenter.playerControlChangeRequest.send((side, player))
         }
 
         do { // board
