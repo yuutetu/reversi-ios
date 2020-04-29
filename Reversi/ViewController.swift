@@ -98,6 +98,21 @@ class ViewController: UIViewController {
             .map { player in player.rawValue }
             .assign(to: \.selectedSegmentIndex, on: playerControls[1])
             .store(in: &cancellables)
+
+        presenter.darkActivityIndicatorSubject.receive(on: DispatchQueue.main).sink { isRun in
+            if isRun {
+                self.playerActivityIndicators[0].startAnimating()
+            } else {
+                self.playerActivityIndicators[0].stopAnimating()
+            }
+        }.store(in: &cancellables)
+        presenter.lightActivityIndicatorSubject.receive(on: DispatchQueue.main).sink { isRun in
+            if isRun {
+                self.playerActivityIndicators[1].startAnimating()
+            } else {
+                self.playerActivityIndicators[1].stopAnimating()
+            }
+        }.store(in: &cancellables)
     }
 }
 
@@ -346,11 +361,11 @@ extension ViewController {
         
         let (x, y) = validMoves(for: turn).randomElement()!
 
-        playerActivityIndicators[turn.index].startAnimating()
+        presenter.activityIndicatorSubject(forDisk: turn).send(true)
         
         let cleanUp: () -> Void = { [weak self] in
             guard let self = self else { return }
-            self.playerActivityIndicators[turn.index].stopAnimating()
+            self.presenter.activityIndicatorSubject(forDisk: turn).send(false)
             self.playerCancellers[turn] = nil
         }
         let canceller = Canceller(cleanUp)

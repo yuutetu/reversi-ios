@@ -38,6 +38,9 @@ class ViewControllerPresenter {
     let darkPlayerControlSubject = CurrentValueSubject<Player, Never>(.manual)
     let lightPlayerControlSubject = CurrentValueSubject<Player, Never>(.manual)
 
+    let darkActivityIndicatorSubject = CurrentValueSubject<Bool, Never>(false)
+    let lightActivityIndicatorSubject = CurrentValueSubject<Bool, Never>(false)
+
     private var cancellables: Set<AnyCancellable> = []
 
     init() {
@@ -77,6 +80,15 @@ class ViewControllerPresenter {
             return darkPlayerControlSubject
         case .light:
             return lightPlayerControlSubject
+        }
+    }
+
+    func activityIndicatorSubject(forDisk disk: Disk) -> CurrentValueSubject<Bool, Never> {
+        switch disk {
+        case .dark:
+            return darkActivityIndicatorSubject
+        case .light:
+            return lightActivityIndicatorSubject
         }
     }
 
