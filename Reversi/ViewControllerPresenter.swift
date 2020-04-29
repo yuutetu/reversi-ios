@@ -34,7 +34,7 @@ class ViewControllerPresenter {
     let turnSubject = CurrentValueSubject<Turn, Never>(.current(.dark))
 
     let playerControlValueChangedEvent = PassthroughSubject<Disk, Never>()
-    let playerControlChangeRequest = PassthroughSubject<Disk, Never>()
+    let playerControlChangeRequest = PassthroughSubject<(Disk, Player), Never>()
     let darkPlayerControlSubject = CurrentValueSubject<Player, Never>(.manual)
     let lightPlayerControlSubject = CurrentValueSubject<Player, Never>(.manual)
 
@@ -47,8 +47,8 @@ class ViewControllerPresenter {
             .subscribe(darkPlayerControlSubject)
             .store(in: &cancellables)
         playerControlChangeRequest
-            .filter({ disk in disk == .dark })
-            .map({ _ in self.darkPlayerControlSubject.value.change })
+            .filter({ (disk, player) in disk == .dark })
+            .map({ (disk, player) in player })
             .subscribe(darkPlayerControlSubject)
             .store(in: &cancellables)
         playerControlValueChangedEvent
@@ -57,8 +57,8 @@ class ViewControllerPresenter {
             .subscribe(lightPlayerControlSubject)
             .store(in: &cancellables)
         playerControlChangeRequest
-            .filter({ disk in disk == .light })
-            .map({ _ in self.lightPlayerControlSubject.value.change })
+            .filter({ (disk, player) in disk == .light })
+            .map({ (disk, player) in player })
             .subscribe(lightPlayerControlSubject)
             .store(in: &cancellables)
 

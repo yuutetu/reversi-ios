@@ -89,6 +89,11 @@ class ViewController: UIViewController {
                 self.playTurnOfComputer()
             }
         }.store(in: &cancellables)
+
+        presenter.darkPlayerControlSubject
+            .map { player in player.rawValue }
+            .assign(to: \.selectedSegmentIndex, on: playerControls[0])
+            .store(in: &cancellables)
     }
 }
 
@@ -271,9 +276,8 @@ extension ViewController {
         boardView.reset()
         presenter.turnSubject.send(.current(.dark))
         
-        for playerControl in playerControls {
-            playerControl.selectedSegmentIndex = Player.manual.rawValue
-        }
+        presenter.playerControlChangeRequest.send((.dark, .manual))
+        presenter.playerControlChangeRequest.send((.light, .manual))
 
         updateMessageViews()
         updateCountLabels()
