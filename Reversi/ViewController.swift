@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 
     // presenter
     // TODO: DI
-    private var presenter = ViewControllerPresenter()
+    private var presenter: ViewControllerPresenter!
     private var cancellables: Set<AnyCancellable> = []
     
     private var animationCanceller: Canceller?
@@ -34,14 +34,14 @@ class ViewController: UIViewController {
 
         boardView.delegate = self
         messageDiskSize = messageDiskSizeConstraint.constant
+
+        setupPresenter()
         
         do {
             try loadGame()
         } catch _ {
             newGame()
         }
-
-        subscribePresenter()
     }
     
     private var viewHasAppeared: Bool = false
@@ -53,12 +53,21 @@ class ViewController: UIViewController {
         waitForPlayer()
     }
 
-    private func subscribePresenter() {
+    private func setupPresenter() {
+        // setup BoardViewPresenter
+        let boardViewPresenter = BoardViewPresenter()
+        boardView.setPresenter(presenter: boardViewPresenter)
+        self.presenter = ViewControllerPresenter(
+            boardViewPresenter: boardViewPresenter
+        )
+
+        // presenter.countSubject -> ui.countLabels
         presenter.darkCountSubject.map({x in String(x)}).assign(to: \.text, on: countLabels[0])
             .store(in: &cancellables)
         presenter.lightCountSubject.map({x in String(x)}).assign(to: \.text, on: countLabels[1])
             .store(in: &cancellables)
 
+        // ui.playerControls -> presenter.playerControlValueChangedEvent
         playerControls[0].publisher(for: .valueChanged).map { _ in Disk.dark }
             .subscribe(presenter.playerControlValueChangedEvent)
             .store(in: &cancellables)
@@ -66,6 +75,8 @@ class ViewController: UIViewController {
             .subscribe(presenter.playerControlValueChangedEvent)
             .store(in: &cancellables)
 
+        // presenter.playerControlValueChangedEvent -> 操作後の処理
+        // TODO: Presenterに移動する
         presenter.playerControlValueChangedEvent.sink { side in
             try? self.saveGame()
 
@@ -90,6 +101,7 @@ class ViewController: UIViewController {
             }
         }.store(in: &cancellables)
 
+        // presenter.playerControlSubject -> ui.playerControls
         presenter.darkPlayerControlSubject
             .map { player in player.rawValue }
             .assign(to: \.selectedSegmentIndex, on: playerControls[0])
@@ -99,6 +111,7 @@ class ViewController: UIViewController {
             .assign(to: \.selectedSegmentIndex, on: playerControls[1])
             .store(in: &cancellables)
 
+        // presenter.darkActivityIndicatorSubject -> ui.playerActivityIndicators
         presenter.darkActivityIndicatorSubject.receive(on: DispatchQueue.main).sink { isRun in
             if isRun {
                 self.playerActivityIndicators[0].startAnimating()

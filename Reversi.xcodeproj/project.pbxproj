@@ -10,6 +10,7 @@
 		20DDF21F2456798200F0278B /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF21E2456798200F0278B /* ViewControllerPresenter.swift */; };
 		20DDF2292457DBB400F0278B /* UISegmentedControl+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */; };
 		20DDF22B2459153800F0278B /* ViewControllerPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF22A2459153800F0278B /* ViewControllerPresenterTests.swift */; };
+		20DDF22F245A420000F0278B /* BoardViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DDF22E245A420000F0278B /* BoardViewPresenter.swift */; };
 		D636B39F23D35043007F370F /* DiskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636B39E23D35043007F370F /* DiskView.swift */; };
 		D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB323A9FE4500396732 /* AppDelegate.swift */; };
 		D642BDB623A9FE4500396732 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB523A9FE4500396732 /* SceneDelegate.swift */; };
@@ -37,6 +38,7 @@
 		20DDF21E2456798200F0278B /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		20DDF2282457DBB400F0278B /* UISegmentedControl+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Publisher.swift"; sourceTree = "<group>"; };
 		20DDF22A2459153800F0278B /* ViewControllerPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenterTests.swift; sourceTree = "<group>"; };
+		20DDF22E245A420000F0278B /* BoardViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewPresenter.swift; sourceTree = "<group>"; };
 		D636B39E23D35043007F370F /* DiskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskView.swift; sourceTree = "<group>"; };
 		D642BDB023A9FE4500396732 /* Reversi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reversi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D642BDB323A9FE4500396732 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				D642BDDB23AA137C00396732 /* BoardView.swift */,
 				D642BDD523AA0B3900396732 /* CellView.swift */,
 				D636B39E23D35043007F370F /* DiskView.swift */,
+				20DDF22E245A420000F0278B /* BoardViewPresenter.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				D642BDB823A9FE4500396732 /* ViewController.swift in Sources */,
 				D642BDDC23AA137C00396732 /* BoardView.swift in Sources */,
 				D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */,
+				20DDF22F245A420000F0278B /* BoardViewPresenter.swift in Sources */,
 				D642BDB623A9FE4500396732 /* SceneDelegate.swift in Sources */,
 				20DDF21F2456798200F0278B /* ViewControllerPresenter.swift in Sources */,
 				20DDF2292457DBB400F0278B /* UISegmentedControl+Publisher.swift in Sources */,

@@ -47,7 +47,7 @@ class ViewControllerPresenter {
 
     private var cancellables: Set<AnyCancellable> = []
 
-    init() {
+    init(boardViewPresenter: BoardViewPresenter) {
         playerControlValueChangedEvent
             .filter({ disk in disk == .dark })
             .map({ _ in self.darkPlayerControlSubject.value.change })

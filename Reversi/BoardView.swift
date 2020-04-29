@@ -20,6 +20,8 @@ public class BoardView: UIView {
     
     /// セルがタップされたときの挙動を移譲するためのオブジェクトです。
     public weak var delegate: BoardViewDelegate?
+
+    private var presenter: BoardViewPresenter!
     
     override public init(frame: CGRect) {
         xRange = 0 ..< width
@@ -102,6 +104,12 @@ public class BoardView: UIView {
                 cellView.addTarget(action, action: #selector(action.selectCell), for: .touchUpInside)
             }
         }
+    }
+
+    func setPresenter(presenter: BoardViewPresenter) {
+        self.presenter = presenter
+
+        // TODO: presenterに対する初期化処理
     }
     
     /// 盤をゲーム開始時に状態に戻します。このメソッドはアニメーションを伴いません。
