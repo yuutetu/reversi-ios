@@ -6,5 +6,8 @@
 //  Copyright © 2020 Yuta Koshizawa. All rights reserved.
 //
 
+import Combine
+
 class CellViewPresenter {
+    let diskSubject = CurrentValueSubject<Disk?, Never>(nil)
 }

@@ -44,6 +44,8 @@ public class BoardView: UIView {
         
         let cellViews: [CellView] = (0 ..< (width * height)).map { _ in
             let cellView = CellView()
+            let presenter = CellViewPresenter()
+            cellView.setPresenter(presenter: presenter)
             cellView.translatesAutoresizingMaskIntoConstraints = false
             return cellView
         }

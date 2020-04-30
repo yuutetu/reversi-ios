@@ -6,9 +6,9 @@ public class CellView: UIView {
     private let button: UIButton = UIButton()
     private let diskView: DiskView = DiskView()
     
-    private var _disk: Disk?
+//    private var _disk: Disk?
     public var disk: Disk? {
-        get { _disk }
+        get { presenter.diskSubject.value }
         set { setDisk(newValue, animated: true) }
     }
     
@@ -65,6 +65,7 @@ public class CellView: UIView {
         let cellSize = bounds.size
         let diskDiameter = Swift.min(cellSize.width, cellSize.height) * 0.8
         let diskSize: CGSize
+        let _disk = presenter.diskSubject.value
         if _disk == nil || diskView.disk == _disk {
             diskSize = CGSize(width: diskDiameter, height: diskDiameter)
         } else {
@@ -78,9 +79,9 @@ public class CellView: UIView {
     }
     
     public func setDisk(_ disk: Disk?, animated: Bool, completion: ((Bool) -> Void)? = nil) {
-        let diskBefore: Disk? = _disk
-        _disk = disk
-        let diskAfter: Disk? = _disk
+        let diskBefore: Disk? = presenter.diskSubject.value
+        presenter.diskSubject.send(disk)
+        let diskAfter: Disk? = presenter.diskSubject.value
         if animated {
             switch (diskBefore, diskAfter) {
             case (.none, .none):
@@ -99,10 +100,10 @@ public class CellView: UIView {
                     self?.layoutDiskView()
                 }, completion: { [weak self] finished in
                     guard let self = self else { return }
-                    if self.diskView.disk == self._disk {
+                    if self.diskView.disk == self.presenter.diskSubject.value {
                         completion?(finished)
                     }
-                    guard let diskAfter = self._disk else {
+                    guard let diskAfter = self.presenter.diskSubject.value else {
                         completion?(finished)
                         return
                     }
