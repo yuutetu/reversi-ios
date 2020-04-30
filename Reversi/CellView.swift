@@ -21,6 +21,8 @@ public class CellView: UIView {
         super.init(coder: coder)
         setUp()
     }
+
+    var presenter: CellViewPresenter!
     
     private func setUp() {
         do { // button
@@ -46,6 +48,10 @@ public class CellView: UIView {
         }
 
         setNeedsLayout()
+    }
+
+    func setPresenter(presenter: CellViewPresenter) {
+        self.presenter = presenter
     }
     
     public override func layoutSubviews() {
