@@ -126,6 +126,10 @@ class ViewController: UIViewController {
                 self.playerActivityIndicators[1].stopAnimating()
             }
         }.store(in: &cancellables)
+
+        boardViewPresenter.handleDidSelectCell.sink { point in
+            print("[Debug] called handleDidSelectCell x: " + String(point.x) + ", y: " + String(point.y))
+        }.store(in: &cancellables)
     }
 }
 
@@ -462,6 +466,7 @@ extension ViewController: BoardViewDelegate {
     /// - Parameter x: セルの列です。
     /// - Parameter y: セルの行です。
     func boardView(_ boardView: BoardView, didSelectCellAtX x: Int, y: Int) {
+        print("[Debug] called delegate.didSelectCell x: " + String(x) + ", y: " + String(y))
         guard case let .current(disk) = presenter.turnSubject.value else {
             return
         }

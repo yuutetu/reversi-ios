@@ -6,6 +6,13 @@
 //  Copyright © 2020 Yuta Koshizawa. All rights reserved.
 //
 
-class BoardViewPresenter {
-    
+import Combine
+
+struct Point {
+    let x: Int
+    let y: Int
+}
+
+public class BoardViewPresenter {
+    let handleDidSelectCell = PassthroughSubject<Point, Never>()
 }

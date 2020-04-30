@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 private let lineWidth: CGFloat = 2
 
@@ -21,7 +22,8 @@ public class BoardView: UIView {
     /// セルがタップされたときの挙動を移譲するためのオブジェクトです。
     public weak var delegate: BoardViewDelegate?
 
-    private var presenter: BoardViewPresenter!
+    public var presenter: BoardViewPresenter!
+    private var cancellables: Set<AnyCancellable> = []
     
     override public init(frame: CGRect) {
         xRange = 0 ..< width
@@ -180,5 +182,6 @@ private class CellSelectionAction: NSObject {
     @objc func selectCell() {
         guard let boardView = boardView else { return }
         boardView.delegate?.boardView(boardView, didSelectCellAtX: x, y: y)
+        boardView.presenter.handleDidSelectCell.send(Point(x: x, y: y))
     }
 }
