@@ -44,8 +44,8 @@ class ViewControllerPresenter {
     let boardViewPresenter: BoardViewPresenter
 
     // For UI
-//    let messageTextSubject = CurrentValueSubject<String, Naver>()
-//    let messageDiskSubject = CurrentValueSubject<Disk?, Naver>()
+    let messageTextSubject = CurrentValueSubject<String, Never>("")
+    let messageDiskSubject = CurrentValueSubject<Disk?, Never>(nil)
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -73,19 +73,39 @@ class ViewControllerPresenter {
             .subscribe(lightPlayerControlSubject)
             .store(in: &cancellables)
 
-        // TODO: turnSubject -> messageTextSubject
-        // Blocker: 勝者判定
-//        turnSubject.flatMap { turn in
-//            switch turn {
-//            case .current(let disk):
-//                return disk
-//            case .finished:
-//
-//            }
-//        }
+        // turnSubject -> messageTextSubject
+        turnSubject.map { turn -> String in
+            switch turn {
+            case .current:
+                return "'s turn"
+            case .finished:
+                // TODO: 勝者判定。一箇所にまとめたい。
+                let darkCount = self.countDisks(of: .dark)
+                let lightCount = self.countDisks(of: .light)
+                if darkCount == lightCount {
+                    return "Tied"
+                } else {
+                    return " won"
+                }
+            }
+        }.subscribe(messageTextSubject).store(in: &cancellables)
 
-        // TODO: turnSubject -> messageDiskSubject
-        // Blocker: 勝者判定
+        // turnSubject -> messageDiskSubject
+        turnSubject.map { turn -> Disk? in
+            switch turn {
+            case .current(let disk):
+                return disk
+            case .finished:
+                // TODO: 勝者判定。一箇所にまとめたい。
+                let darkCount = self.countDisks(of: .dark)
+                let lightCount = self.countDisks(of: .light)
+                if darkCount == lightCount {
+                    return nil
+                } else {
+                    return darkCount > lightCount ? .dark : .light
+                }
+            }
+        }.subscribe(messageDiskSubject).store(in: &cancellables)
 
         // For Debug
         darkPlayerControlSubject.sink { player in

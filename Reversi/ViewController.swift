@@ -111,7 +111,7 @@ class ViewController: UIViewController {
             .assign(to: \.selectedSegmentIndex, on: playerControls[1])
             .store(in: &cancellables)
 
-        // presenter.darkActivityIndicatorSubject -> ui.playerActivityIndicators
+        // presenter.activityIndicatorSubject -> ui.playerActivityIndicators
         presenter.darkActivityIndicatorSubject.receive(on: DispatchQueue.main).sink { isRun in
             if isRun {
                 self.playerActivityIndicators[0].startAnimating()
@@ -130,6 +130,22 @@ class ViewController: UIViewController {
         boardViewPresenter.handleDidSelectCell.sink { point in
             print("[Debug] called handleDidSelectCell x: " + String(point.x) + ", y: " + String(point.y))
         }.store(in: &cancellables)
+
+        // presenter.messageTextSubject -> ui.messageLabel
+        presenter.messageTextSubject
+            .map{ text -> String? in text }
+            .assign(to: \.text, on: messageLabel)
+            .store(in: &cancellables)
+        // presenter.messageDiskSubject -> ui.messageDiskView
+        presenter.messageDiskSubject
+            .filter{ disk in disk != nil }
+            .map{ disk -> Disk in disk! }
+            .assign(to: \.disk, on: messageDiskView)
+            .store(in: &cancellables)
+        presenter.messageDiskSubject
+            .map{ disk -> CGFloat in (disk != nil) ? self.messageDiskSize : 0 }
+            .assign(to: \.constant, on: messageDiskSizeConstraint)
+            .store(in: &cancellables)
     }
 }
 
@@ -299,7 +315,6 @@ extension ViewController {
         presenter.playerControlChangeRequest.send((.dark, .manual))
         presenter.playerControlChangeRequest.send((.light, .manual))
 
-        updateMessageViews()
         updateCountLabels()
         
         try? saveGame()
@@ -332,10 +347,8 @@ extension ViewController {
         if validMoves(for: turn).isEmpty {
             if validMoves(for: turn.flipped).isEmpty {
                 presenter.turnSubject.send(.finished)
-                updateMessageViews()
             } else {
                 presenter.turnSubject.send(.current(turn))
-                updateMessageViews()
                 
                 let alertController = UIAlertController(
                     title: "Pass",
@@ -349,7 +362,6 @@ extension ViewController {
             }
         } else {
             presenter.turnSubject.send(.current(turn))
-            updateMessageViews()
             waitForPlayer()
         }
     }
@@ -391,25 +403,6 @@ extension ViewController {
     func updateCountLabels() {
         presenter.darkCountSubject.send(presenter.countDisks(of: .dark))
         presenter.lightCountSubject.send(presenter.countDisks(of: .light))
-    }
-    
-    /// 現在の状況に応じてメッセージを表示します。
-    func updateMessageViews() {
-        switch presenter.turnSubject.value {
-        case .current(let side):
-            messageDiskSizeConstraint.constant = messageDiskSize
-            messageDiskView.disk = side
-            messageLabel.text = "'s turn"
-        case .finished:
-            if let winner = self.sideWithMoreDisks() {
-                messageDiskSizeConstraint.constant = messageDiskSize
-                messageDiskView.disk = winner
-                messageLabel.text = " won"
-            } else {
-                messageDiskSizeConstraint.constant = 0
-                messageLabel.text = "Tied"
-            }
-        }
     }
 }
 
@@ -547,7 +540,7 @@ extension ViewController {
             }
         }
 
-        updateMessageViews()
+//        updateMessageViews()
         updateCountLabels()
     }
     
