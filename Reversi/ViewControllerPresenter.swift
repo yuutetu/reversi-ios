@@ -41,6 +41,8 @@ class ViewControllerPresenter {
     let darkActivityIndicatorSubject = CurrentValueSubject<Bool, Never>(false)
     let lightActivityIndicatorSubject = CurrentValueSubject<Bool, Never>(false)
 
+    let boardViewPresenter: BoardViewPresenter
+
     // For UI
 //    let messageTextSubject = CurrentValueSubject<String, Naver>()
 //    let messageDiskSubject = CurrentValueSubject<Disk?, Naver>()
@@ -48,6 +50,8 @@ class ViewControllerPresenter {
     private var cancellables: Set<AnyCancellable> = []
 
     init(boardViewPresenter: BoardViewPresenter) {
+        self.boardViewPresenter = boardViewPresenter
+
         playerControlValueChangedEvent
             .filter({ disk in disk == .dark })
             .map({ _ in self.darkPlayerControlSubject.value.change })
@@ -108,6 +112,20 @@ class ViewControllerPresenter {
         case .light:
             return lightActivityIndicatorSubject
         }
+    }
+
+    func countDisks(of side: Disk) -> Int {
+        var count = 0
+
+        for y in BoardViewPresenter.yRange {
+            for x in BoardViewPresenter.xRange {
+                if boardViewPresenter.diskAt(x: x, y: y) == side {
+                    count +=  1
+                }
+            }
+        }
+
+        return count
     }
 
     // 互換性担保

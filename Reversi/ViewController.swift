@@ -136,29 +136,13 @@ class ViewController: UIViewController {
 // MARK: Reversi logics
 
 extension ViewController {
-    /// `side` で指定された色のディスクが盤上に置かれている枚数を返します。
-    /// - Parameter side: 数えるディスクの色です。
-    /// - Returns: `side` で指定された色のディスクの、盤上の枚数です。
-    func countDisks(of side: Disk) -> Int {
-        var count = 0
-        
-        for y in boardView.yRange {
-            for x in boardView.xRange {
-                if boardView.diskAt(x: x, y: y) == side {
-                    count +=  1
-                }
-            }
-        }
-        
-        return count
-    }
     
     /// 盤上に置かれたディスクの枚数が多い方の色を返します。
     /// 引き分けの場合は `nil` が返されます。
     /// - Returns: 盤上に置かれたディスクの枚数が多い方の色です。引き分けの場合は `nil` を返します。
     func sideWithMoreDisks() -> Disk? {
-        let darkCount = countDisks(of: .dark)
-        let lightCount = countDisks(of: .light)
+        let darkCount = presenter.countDisks(of: .dark)
+        let lightCount = presenter.countDisks(of: .light)
         if darkCount == lightCount {
             return nil
         } else {
@@ -178,7 +162,7 @@ extension ViewController {
             (x: -1, y:  1),
         ]
         
-        guard boardView.diskAt(x: x, y: y) == nil else {
+        guard presenter.boardViewPresenter.diskAt(x: x, y: y) == nil else {
             return []
         }
         
@@ -193,7 +177,7 @@ extension ViewController {
                 x += direction.x
                 y += direction.y
                 
-                switch (disk, boardView.diskAt(x: x, y: y)) { // Uses tuples to make patterns exhaustive
+                switch (disk, presenter.boardViewPresenter.diskAt(x: x, y: y)) { // Uses tuples to make patterns exhaustive
                 case (.dark, .some(.dark)), (.light, .some(.light)):
                     diskCoordinates.append(contentsOf: diskCoordinatesInLine)
                     break flipping
@@ -405,8 +389,8 @@ extension ViewController {
 extension ViewController {
     /// 各プレイヤーの獲得したディスクの枚数を表示します。
     func updateCountLabels() {
-        presenter.darkCountSubject.send(countDisks(of: .dark))
-        presenter.lightCountSubject.send(countDisks(of: .light))
+        presenter.darkCountSubject.send(presenter.countDisks(of: .dark))
+        presenter.lightCountSubject.send(presenter.countDisks(of: .light))
     }
     
     /// 現在の状況に応じてメッセージを表示します。
@@ -497,7 +481,7 @@ extension ViewController {
         
         for y in boardView.yRange {
             for x in boardView.xRange {
-                output += boardView.diskAt(x: x, y: y).symbol
+                output += presenter.boardViewPresenter.diskAt(x: x, y: y).symbol
             }
             output += "\n"
         }

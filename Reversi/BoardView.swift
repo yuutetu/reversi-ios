@@ -7,34 +7,34 @@ public class BoardView: UIView {
     private var cellViews: [CellView] = []
     private var actions: [CellSelectionAction] = []
     
-    /// 盤の幅（ `8` ）を表します。
-    public let width: Int = 8
-    
-    /// 盤の高さ（ `8` ）を返します。
-    public let height: Int = 8
-    
-    /// 盤のセルの `x` の範囲（ `0 ..< 8` ）を返します。
-    public let xRange: Range<Int>
-    
-    /// 盤のセルの `y` の範囲（ `0 ..< 8` ）を返します。
-    public let yRange: Range<Int>
-    
     /// セルがタップされたときの挙動を移譲するためのオブジェクトです。
     public weak var delegate: BoardViewDelegate?
 
     public var presenter: BoardViewPresenter!
     private var cancellables: Set<AnyCancellable> = []
+
+    public var width: Int {
+        return BoardViewPresenter.width
+    }
+
+    public var height: Int {
+        return BoardViewPresenter.height
+    }
+
+    public var xRange: Range<Int> {
+        return BoardViewPresenter.xRange
+    }
+
+    public var yRange: Range<Int> {
+        return BoardViewPresenter.yRange
+    }
     
     override public init(frame: CGRect) {
-        xRange = 0 ..< width
-        yRange = 0 ..< height
         super.init(frame: frame)
         setUp()
     }
     
     required public init?(coder: NSCoder) {
-        xRange = 0 ..< width
-        yRange = 0 ..< height
         super.init(coder: coder)
         setUp()
     }
@@ -133,15 +133,6 @@ public class BoardView: UIView {
     private func cellViewAt(x: Int, y: Int) -> CellView? {
         guard xRange.contains(x) && yRange.contains(y) else { return nil }
         return cellViews[y * width + x]
-    }
-    
-    /// `x`, `y` で指定されたセルの状態を返します。
-    /// セルにディスクが置かれていない場合、 `nil` が返されます。
-    /// - Parameter x: セルの列です。
-    /// - Parameter y: セルの行です。
-    /// - Returns: セルにディスクが置かれている場合はそのディスクの値を、置かれていない場合は `nil` を返します。
-    public func diskAt(x: Int, y: Int) -> Disk? {
-        cellViewAt(x: x, y: y)?.disk
     }
     
     /// `x`, `y` で指定されたセルの状態を、与えられた `disk` に変更します。
