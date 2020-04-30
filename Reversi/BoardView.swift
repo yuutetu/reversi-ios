@@ -113,7 +113,7 @@ public class BoardView: UIView {
     func setPresenter(presenter: BoardViewPresenter) {
         self.presenter = presenter
 
-        // TODO: presenterに対する初期化処理
+        presenter.cellViewPresenters = cellViews.map({ cellView in cellView.presenter })
     }
     
     /// 盤をゲーム開始時に状態に戻します。このメソッドはアニメーションを伴いません。

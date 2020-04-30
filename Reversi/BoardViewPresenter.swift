@@ -15,4 +15,5 @@ struct Point {
 
 public class BoardViewPresenter {
     let handleDidSelectCell = PassthroughSubject<Point, Never>()
+    var cellViewPresenters: [CellViewPresenter] = []
 }
